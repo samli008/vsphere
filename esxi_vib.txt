@@ -1,0 +1,17 @@
+esxcli software vib install -v 加vib包绝对路径安装执行安装驱动
+
+esxcfg-scsidevs -a 这个命令查看存储设备
+
+# modify HBA parameter
+esxcli system module list |grep lpfc
+
+esxcli system module parameters set -m lpfc820 -p "lpfc_devloss_tmo=60 lpfc_lun_queue_depth=254"
+reboot
+esxcli system module parameters list -m=lpfc820
+
+# view and set storage volume path policy
+esxcli storage nmp device list
+
+esxcli storage nmp satp rule add -s VMW_SATP_ALUA -V COMPELNT -P VMW_PSP_RR -o disable_action_OnRetryErrors -e "Dell EMC SC Series Claim Rule" -O iops=3
+reboot
+esxcli storage nmp device list | grep -A2 naa.

@@ -1,0 +1,12 @@
+esxcli storage nmp satp rule add --satp VMW_SATP_LOCAL --device naa.690b11c00cfe81001d73178b08d76070 --option=enable_ssd
+
+esxcli storage core claiming reclaim -d naa.690b11c00cfe81001d73178b08d76070
+
+vi /etc/vmware/config 
+
+vhv.allow = "true"
+
+mce.enable = TRUE
+hypervisor.cpuid.v0 = FALSE
+featMask.vm.hv.capable = "Min:1"
+vhv.enable = TRUE
