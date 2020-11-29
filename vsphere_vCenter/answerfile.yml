@@ -1,0 +1,42 @@
+# path to vCenter installer ISO
+vcIso: '/root/VMware-VCSA-all-6.7.0-14367737.iso'
+
+
+
+# configuration for accessing the existing physical ESXi
+physicalESX:
+  host: '192.168.6.107'
+  user: 'root' 
+  password: 'liyang@008' 
+  vswitch: vSwitch0
+
+# the vCenter appliance that need to be deployed
+vcenter:
+  ip: '192.168.6.108' # vCenter ip address 
+  mask: '24'
+  gw: '192.168.6.1'
+  network: 'VM Network' # this portGroup will be created on the pESX with the vlan id specified in the physicalESX section
+  name: 'vcenter.vsphere.local' # FQDN if there is working DNS server, otherwise put the ip as a name
+  psc_name: 'vcenter.vsphere.local' # if psc_name is the same as name above and psc_ip is the same as ip above, it will be vCenter with embeded PSC.
+  psc_ip: '192.168.6.108' # just change the name and ip address for the PSC if you want external PSC to be deployed.
+  thin: 'true'
+  user: 'administrator@vsphere.local' 
+  password: 'Liyang@008' 
+  datacenter: 'data01'
+  datastore: 'dt01' # Datastore name where the nested ESXi VMs will be deployed
+  domain: 'vsphere.local'
+dns1: '61.139.2.69'
+dns2: '8.8.8.8'
+ntp_server: '192.168.6.1'
+
+clusters: # You can add, remove or rename clusters in this section, you can specify to which cluster specific nested ESXi to be connected to
+# Do not change ha and vsan to True untill I fix a bug. It is better to go and enable first vSAN and HA after the deployment is done
+  Management:
+    ha: False
+    drs: False
+    vsan: False
+  Compute:
+    ha: False
+    drs: True
+    vsan: True
+
