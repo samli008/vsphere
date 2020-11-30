@@ -28,7 +28,7 @@ Edit answersfile.yml according to your infrastructure!
 ansible-playbook deploy.yml
 
 ## Limitations
-Ansible => 2.7 is required <br/>
+Ansible => 2.7 is required
 ESXi version 6.7 and above is supported
 VCSA version 6.7 and above is supported
 
