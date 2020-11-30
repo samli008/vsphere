@@ -6,5 +6,5 @@
     - ./answerfile.yml
 - import_playbook: playbooks/preparePhysicalESXi.yml
 - import_playbook: playbooks/deployVC.yml
-- import_playbook: playbooks/connectPESXtoVC.yml.yml
+- import_playbook: playbooks/connectPESXtoVC.yml
 
