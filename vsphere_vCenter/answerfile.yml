@@ -1,8 +1,6 @@
 # path to vCenter installer ISO
 vcIso: '/root/VMware-VCSA-all-6.7.0-14367737.iso'
 
-
-
 # configuration for accessing the existing physical ESXi
 physicalESX:
   host: '192.168.6.107'
