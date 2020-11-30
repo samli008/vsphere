@@ -1,16 +1,7 @@
-# vsphere-nsx-lab-deploy
+# vsphere-vCenter-deploy
 Ansible playbook to automate deployment of vCenter, nested ESXi hosts
 
 #### Table of Contents
-
-1. [Description](#description)
-1. [Setup - The basics of getting started with nsxt](#setup)
-    * [Dependencies](#Dependencies)
-    * [Edit answersfile.yml](#Edit answersfile.yml)
-1. [Usage](#usage)
-1. [Limitations)
-1. [Development](#development)
-
 ## Description
 
 This repository will be used to hold an Ansible Playbook to deploy and configure vCenter and nested ESXi VMs 
