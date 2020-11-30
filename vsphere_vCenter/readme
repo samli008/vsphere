@@ -19,7 +19,6 @@ pip install pyvmomi
 
 Place the ESXi and VCSA ISOs in /root/
 
-
 ### Edit answersfile.yml
 
 Edit answersfile.yml according to your infrastructure!
@@ -27,7 +26,6 @@ Edit answersfile.yml according to your infrastructure!
 ## Usage
 
 ansible-playbook deploy.yml
-
 
 ## Limitations
 Ansible => 2.7 is required <br/>
