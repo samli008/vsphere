@@ -31,8 +31,8 @@ ansible-playbook deploy.yml
 
 ## Limitations
 Ansible => 2.7 is required <br/>
-ESXi version 6.7 and above is supported <br/>
-VCSA version 6.7 and above is supported <br/>
+ESXi version 6.7 and above is supported
+VCSA version 6.7 and above is supported
 
 ## Development
 TODO: External PSC for vSphere 6.7
