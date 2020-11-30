@@ -22,12 +22,11 @@ for olther versions see pre-67 branch!
 
 ### Dependencies
 
-apt-get install sshpass python-pip git <br/>
-pip install vim <br/>
-pip install pyvmomi <br/>
-git clone https://github.com/yasensim/vsphere-nsx-lab-deploy.git <br/>
+yum -y  install sshpass python-pip git 
+pip install vim
+pip install pyvmomi
 
-Place the ESXi and VCSA ISOs in /root/ISOs <br/>
+Place the ESXi and VCSA ISOs in /root/
 
 
 ### Edit answersfile.yml
@@ -47,4 +46,3 @@ VCSA version 6.7 and above is supported <br/>
 ## Development
 TODO: External PSC for vSphere 6.7
 VMware internal
-
