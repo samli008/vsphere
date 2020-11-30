@@ -1,0 +1,121 @@
+# path to the ESXi Installer ISO
+esxIso: '/root/ISOs/VMware-VMvisor-Installer-6.7.0-13006603.x86_64.iso'
+#esxIso: '/root/ISOs/VMware-VMvisor-Installer-6.5.0-4887370.x86_64.iso'
+# path to vCenter installer ISO
+vcIso: '/root/ISOs/VMware-VCSA-all-6.7.0-13010631.iso'
+#vcIso: '/root/ISOs/VMware-VCSA-all-6.5.0-5178943.iso'
+
+
+
+# configuration for accessing the existing physical ESXi
+physicalESX:
+  host: 'prmh-33.yasen.local'
+  user: 'root' 
+  password: 'VMware1!' 
+  vlan: 48
+  vswitch: vSwitch0
+
+# the vCenter appliance that need to be deployed
+vcenter:
+  ip: '10.114.209.229' # vCenter ip address 
+  mask: '27'
+  gw: '10.114.209.225'
+  network: 'Infrastructure' # this portGroup will be created on the pESX with the vlan id specified in the physicalESX section
+  name: 'vcenter.yasen.local' # FQDN if there is working DNS server, otherwise put the ip as a name
+  psc_name: 'vcenter.yasen.local' # if psc_name is the same as name above and psc_ip is the same as ip above, it will be vCenter with embeded PSC.
+  psc_ip: '10.114.209.229' # just change the name and ip address for the PSC if you want external PSC to be deployed.
+  thin: 'true'
+  user: 'administrator@yasen.local' 
+  password: 'VMware1!' 
+  datacenter: 'MyDC1'
+  datastore: 'Datastore' # Datastore name where the nested ESXi VMs will be deployed
+  domain: 'yasen.local'
+# if there is existing VC connected to the physical ESXi change the configuration here. If there is no existing VC the config must be the same as the vcenter section above
+vc_mng:
+  ip: '10.114.209.229' # if you have existing VC already deployed and connected to the physical ESX put the ip address here, otherwise it must be the same as the parameters in vcenter section above
+  mask: '27'
+  gw: '10.114.209.225'
+  network: 'Infrastructure'
+  name: 'vcenter.yasen.local' # if you have existing VC already deployed and connected to the physical ESX put the existing VC VM name here, otherwise it must be the same as the parameters in vcenter section above
+  user: 'administrator@yasen.local' 
+  password: 'VMware1!' 
+  datacenter: 'MyDC1' 
+  datastore: 'Datastore'
+  domain: 'yasen.local'
+
+dns1: '10.114.209.60'
+dns2: '8.8.8.8'
+ntp_server: '10.166.17.90'
+domain: 'yasen.local'
+
+clusters: # You can add, remove or rename clusters in this section, you can specify to which cluster specific nested ESXi to be connected to
+# Do not change ha and vsan to True untill I fix a bug. It is better to go and enable first vSAN and HA after the deployment is done
+  Management:
+    ha: False
+    drs: False
+    vsan: False
+  Compute:
+    ha: False
+    drs: True
+    vsan: True
+
+# vMotion vlan and network, no need to be reachible, you can configure random values here
+vmotion_vlan: 1078
+vmotion_mask: 255.255.255.0
+vmotion_gw: 172.16.122.250
+
+# vSAN  vlan and network, no need to be reachible, you can configure random values here
+vsan_vlan: 1079
+vsan_mask: 255.255.255.0
+vsan_gw: 172.16.123.250
+
+# You can add, remove or rename the nested ESXi below, in this example the names will be esx1, esx2, etc ...
+vESX:
+  esxi1:
+    ip: 10.114.209.231
+    mask: 255.255.255.224
+    gw: 10.114.209.225
+    mng_cluster: 'Management' # the cluster where physical ESXi is connected to. The nested VMs will be deployed here
+    cluster: Compute # the cluster where this specific nested ESXi need to be connected to
+    vlan: 48 # the external vlan id, need to have connectivity with the vCener
+    cpu: 8 # CPU count
+    ram: 65536 # memory
+    hdd: 180 # there is one HDD 8GB by default where the ESXi OS is installed. Additional one is SSD emulated drive configured half of the value here, and third HDD is according the value here
+    vmotion_ip: 172.16.122.1 
+    vsan_ip: 172.16.123.1 # even if you dont need vSAN put an IP address here otherwise the install will fail
+  esxi2:
+    ip: 10.114.209.232
+    mask: 255.255.255.224
+    gw: 10.114.209.225
+    mng_cluster: 'Management' # the cluster where physical ESXi is connected to. The nested VMs will be deployed here
+    cluster: Compute # the cluster where this specific nested ESXi need to be connected to
+    vlan: 48 # the external vlan id, need to have connectivity with the vCener
+    cpu: 8 # CPU count
+    ram: 65536 # memory
+    hdd: 180 # there is one HDD 8GB by default where the ESXi OS is installed. Additional one is SSD emulated drive configured half of the value here, and third HDD is according the value here
+    vmotion_ip: 172.16.122.2 
+    vsan_ip: 172.16.123.2 # even if you dont need vSAN put an IP address here otherwise the install will fail
+  esxi3:
+    ip: 10.114.209.233
+    mask: 255.255.255.224
+    gw: 10.114.209.225
+    mng_cluster: 'Management' # the cluster where physical ESXi is connected to. The nested VMs will be deployed here
+    cluster: Compute # the cluster where this specific nested ESXi need to be connected to
+    vlan: 48 # the external vlan id, need to have connectivity with the vCener
+    cpu: 8 # CPU count
+    ram: 65536 # memory
+    hdd: 180 # there is one HDD 8GB by default where the ESXi OS is installed. Additional one is SSD emulated drive configured half of the value here, and third HDD is according the value here
+    vmotion_ip: 172.16.122.3
+    vsan_ip: 172.16.123.3 # even if you dont need vSAN put an IP address here otherwise the install will fail
+  esxi4:
+    ip: 10.114.209.234
+    mask: 255.255.255.224
+    gw: 10.114.209.225
+    mng_cluster: 'Management' # the cluster where physical ESXi is connected to. The nested VMs will be deployed here
+    cluster: Compute # the cluster where this specific nested ESXi need to be connected to
+    vlan: 48 # the external vlan id, need to have connectivity with the vCener
+    cpu: 8 # CPU count
+    ram: 65536 # memory
+    hdd: 180 # there is one HDD 8GB by default where the ESXi OS is installed. Additional one is SSD emulated drive configured half of the value here, and third HDD is according the value here
+    vmotion_ip: 172.16.122.4 
+    vsan_ip: 172.16.123.4 # even if you dont need vSAN put an IP address here otherwise the install will fail
