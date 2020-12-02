@@ -7,6 +7,9 @@ vim-cmd vmsvc/power.getstate vmid
 # start vm
 vim-cmd vmsvc/power.on vmid
 
+# stop vm
+vim-cmd vmsvc/power.off vmid
+
 # host to maintenance 
 vim-cmd hostsvc/maintenance_mode_enter
 
