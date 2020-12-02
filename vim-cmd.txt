@@ -1,0 +1,14 @@
+# view vm
+vim-cmd vmsvc/getallvms
+
+# get vm state
+vim-cmd vmsvc/power.getstate vmid
+
+# start vm
+vim-cmd vmsvc/power.on vmid
+
+# host to maintenance 
+vim-cmd hostsvc/maintenance_mode_enter
+
+# host exit maintenance
+vim-cmd hostsvc/maintenance_mode_exit
