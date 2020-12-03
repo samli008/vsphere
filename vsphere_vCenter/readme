@@ -32,6 +32,9 @@ Ansible => 2.7 is required
 ESXi version 6.7 and above is supported
 VCSA version 6.7 and above is supported
 
+yum -y remove ansible
+pip install ansible==2.7 -i https://mirrors.aliyun.com/pypi/simple
+
 ## Development
 TODO: External PSC for vSphere 6.7
 VMware internal
