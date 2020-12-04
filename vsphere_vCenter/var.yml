@@ -1,5 +1,6 @@
-# path to vCenter installer ISO
-vcIso: '/root/VMware-VCSA-all-6.7.0-14367737.iso'
+iso: 
+  iso1: c76custom.iso
+  iso2: c76mini.iso
 
 physicalESX:
   host: '192.168.6.107'
@@ -11,7 +12,7 @@ vcenter:
   ip: '192.168.6.108' 
   mask: '24'
   gw: '192.168.6.1'
-  network: 'vc' 
+  network: 'vc'
   name: 'vcenter.liyang.com'
   psc_name: 'vcenter.liyang.com'
   psc_ip: '192.168.6.108'
@@ -19,18 +20,6 @@ vcenter:
   user: 'administrator@liyang.com' 
   password: 'Liyang@008' 
   datacenter: 'data01'
-  datastore: 'dt01' 
+  datastore: 'dt01'
   domain: 'liyang.com'
-dns1: '192.168.8.11'
-dns2: '8.8.8.8'
-ntp_server: '192.168.8.11'
 
-clusters:
-  Management:
-    ha: False
-    drs: False
-    vsan: False
-  Compute:
-    ha: False
-    drs: True
-    vsan: True
