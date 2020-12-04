@@ -15,10 +15,10 @@
         guest_id: centos64Guest
         validate_certs: no
         folder: /
-        name: esxi01
+        name: c76
         state: poweredon
         disk:
-        - size_gb: 10
+        - size_gb: 20
           type: thin
           datastore: "{{ vcenter.datastore }}"
         networks:
@@ -35,4 +35,4 @@
           unit_number: 0
           state: present
           type: iso
-          iso_path: "[dt01] ISO/customesxv.iso"
+          iso_path: "[dt01] ISO/c76.iso"
