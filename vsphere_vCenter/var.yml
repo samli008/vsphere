@@ -22,4 +22,3 @@ vcenter:
   datacenter: 'data01'
   datastore: 'dt01'
   domain: 'liyang.com'
-
