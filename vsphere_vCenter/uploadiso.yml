@@ -1,5 +1,5 @@
 ---
-- name: upload ISO to datastore
+- name: Prepare ESXi installer ISO
   hosts: localhost
   gather_facts: True
   vars_files:
@@ -7,8 +7,8 @@
   tasks:
     - name: Upload the ISO to the Datastore
       vsphere_copy: 
-        host: "{{ vcenter.ip }}"
-        login: "{{ vcenter.user }}" 
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}" 
         password: "{{ vcenter.password }}"
         datacenter: "{{ vcenter.datacenter }}"
         datastore: "{{ vcenter.datastore }}" 
