@@ -13,6 +13,6 @@
         datacenter: "{{ vcenter.datacenter }}"
         datastore: "{{ vcenter.datastore }}" 
         src: "{{item.value}}"
-        path: /ISO/"{{item.value}}"
+        path: "/ISO/{{item.value}}"
         validate_certs: False
       with_dict: "{{iso}}"
