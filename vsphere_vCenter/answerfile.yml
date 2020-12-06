@@ -1,5 +1,5 @@
-# path to vCenter installer ISO
 vcIso: '/root/VMware-VCSA-all-6.7.0-14367737.iso'
+esxIso: '/root/esxi67.iso'
 
 physicalESX:
   host: '192.168.6.107'
@@ -8,10 +8,10 @@ physicalESX:
   vswitch: vSwitch0
 
 vcenter:
-  ip: '192.168.6.108' 
+  ip: '192.168.6.108'
   mask: '24'
   gw: '192.168.6.1'
-  network: 'vc' 
+  network: 'vc'
   name: 'vcenter.liyang.com'
   psc_name: 'vcenter.liyang.com'
   psc_ip: '192.168.6.108'
@@ -19,7 +19,7 @@ vcenter:
   user: 'administrator@liyang.com' 
   password: 'Liyang@008' 
   datacenter: 'data01'
-  datastore: 'dt01' 
+  datastore: 'dt01'
   domain: 'liyang.com'
 dns1: '192.168.8.11'
 dns2: '8.8.8.8'
@@ -34,3 +34,41 @@ clusters:
     ha: False
     drs: True
     vsan: True
+
+vESX:
+  esxi01:
+    ip: 192.168.6.104
+    mask: 255.255.255.0
+    gw: 192.168.6.1
+    mng_cluster: 'Management' 
+    cluster: Compute
+    vlan: 48 
+    cpu: 8 
+    ram: 4096
+    hdd: 180 
+    vmotion_ip: 192.168.100.104
+    vsan_ip: 192.168.200.104
+  esxi02:
+    ip: 192.168.6.105
+    mask: 255.255.255.0
+    gw: 192.168.6.1
+    mng_cluster: 'Management' 
+    cluster: Compute
+    vlan: 48 
+    cpu: 8 
+    ram: 4096
+    hdd: 180 
+    vmotion_ip: 192.168.100.105
+    vsan_ip: 192.168.200.105
+  esxi03:
+    ip: 192.168.6.106
+    mask: 255.255.255.0
+    gw: 192.168.6.1
+    mng_cluster: 'Management' 
+    cluster: Compute
+    vlan: 48 
+    cpu: 8 
+    ram: 4096
+    hdd: 180 
+    vmotion_ip: 192.168.100.106
+    vsan_ip: 192.168.200.106
