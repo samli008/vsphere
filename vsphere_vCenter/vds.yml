@@ -114,6 +114,7 @@
         enable_vsan: true
         vsan_auto_claim_storage: true
         validate_certs: False
+
     - name: Enable HA on the clusters
       vmware_cluster_ha:
         hostname: "{{ vcenter.ip }}"
