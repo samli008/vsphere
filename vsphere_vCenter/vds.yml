@@ -19,6 +19,7 @@
         discovery_operation: both
         state: present
       register: vds
+
     - name: Create Management Portgroup
       vmware_dvs_portgroup:
         hostname: "{{ vcenter.ip }}"
@@ -32,6 +33,7 @@
         portgroup_type: earlyBinding
         state: present
       register: pg
+
     - name: Create vMotion Portgroup
       vmware_dvs_portgroup:
         hostname: "{{ vcenter.ip }}"
@@ -45,6 +47,7 @@
         portgroup_type: earlyBinding
         state: present
       register: vmotion_pg
+
     - name: Create vSAN Portgroup
       vmware_dvs_portgroup:
         hostname: "{{ vcenter.ip }}"
