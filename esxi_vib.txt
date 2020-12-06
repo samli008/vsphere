@@ -1,6 +1,11 @@
 esxcli software vib install -v 加vib包绝对路径安装执行安装驱动
 
 esxcfg-scsidevs -a 这个命令查看存储设备
+esxcli vsan network list
+esxcli vsan storage list
+esxcfg-vswitch -l
+esxcfg-vmknic -l
+vmkping -I vmk0 192.168.6.105
 
 # modify HBA parameter
 esxcli system module list |grep lpfc
