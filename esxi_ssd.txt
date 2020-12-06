@@ -4,7 +4,7 @@ esxcli storage core claiming reclaim -d naa.690b11c00cfe81001d73178b08d76070
 
 # esxi support nested need reboot
 vi /etc/vmware/config 
-vhv.allow = "true"
+vhv.enable = "true"
 egrep -c '(vmx|svm)' /proc/cpuinfo
 
 mce.enable = TRUE
