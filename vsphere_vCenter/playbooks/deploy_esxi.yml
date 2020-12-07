@@ -21,20 +21,23 @@
         - size_gb: 20
           type: thin
           datastore: "{{ vcenter.datastore }}"
+        - size_gb: 30
+          type: thin
+          datastore: "{{ vcenter.datastore }}"
         - size_gb: 50
           type: thin
           datastore: "{{ vcenter.datastore }}"
         networks:
         - name: vc
-          device_type: e1000
+          device_type: vmxnet3 
           network: VM Network
           network_type: standard
         - name: AllVlansVSS
-          device_type: e1000
+          device_type: vmxnet3
           network: VM Network
           network_type: standard
         hardware:
-          memory_mb: 4096
+          memory_mb: 6144
           num_cpus: 2
           scsi: lsilogic
         cdrom:
