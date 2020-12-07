@@ -26,7 +26,7 @@
         password: "{{ physicalESX.password }}"
         switch_name: "{{ physicalESX.vswitch }}"
         portgroup_name: "AllVlansVSS"
-#        vlan_id: 4095
+        vlan_id: 4095
         network_policy:
           promiscuous_mode: True
           forged_transmits: True
