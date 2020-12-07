@@ -18,7 +18,19 @@
         discovery_proto: lldp
         discovery_operation: both
         state: present
-      register: vds
+
+    - name: Create Management Portgroup
+      vmware_dvs_portgroup:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        validate_certs: false
+        portgroup_name: Management
+        switch_name: "ComputeEdgeVDS"
+        vlan_id: 48
+        num_ports: 120
+        portgroup_type: earlyBinding
+        state: present
 
     - name: Create vMotion Portgroup
       vmware_dvs_portgroup:
