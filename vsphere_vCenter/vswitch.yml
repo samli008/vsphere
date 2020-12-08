@@ -10,7 +10,7 @@
         hostname: "{{ physicalESX.host }}"
         username: "{{ physicalESX.user }}"
         password: "{{ physicalESX.password }}"
-        switch: vSwitch1
+        switch_name: vSwitch1
         nics:
         - vmnic1
         - vmnic2
