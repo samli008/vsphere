@@ -13,24 +13,30 @@
         password: "{{ physicalESX.password }}"
         switch_name: "{{ physicalESX.vswitch }}"
         portgroup_name: "{{ vcenter.network }}"
-#        vlan_id: "{{ physicalESX.vlan }}"
         network_policy:
           promiscuous_mode: True
         validate_certs: False
-#      when: vcenter.ip  ==  vc_mng.ip
-    - name: Create Infrastructure portgroup
-      vmware_portgroup:
+
+    - name: Add a vSwitch
+      vmware_vswitch:
         hostname: "{{ physicalESX.host }}"
-        esxi_hostname: "{{ physicalESX.host }}"
         username: "{{ physicalESX.user }}"
         password: "{{ physicalESX.password }}"
-        switch_name: "{{ physicalESX.vswitch }}"
-        portgroup_name: "AllVlansVSS"
+        switch_name: vSwitch1
+        nics:
+        - vmnic1
+        mtu: 1500
+        validate_certs: False
+
+    - name: Add a portgroup
+      vmware_portgroup:
+        hostname: "{{ physicalESX.host }}"
+        username: "{{ physicalESX.user }}"
+        password: "{{ physicalESX.password }}"
+        esxi_hostname: "{{ physicalESX.host }}"
+        switch_name: vSwitch1
+        portgroup_name: allVlan
         vlan_id: 4095
         network_policy:
           promiscuous_mode: True
-          forged_transmits: True
-          mac_changes: True
         validate_certs: False
-#      when: vcenter.ip  ==  vc_mng.ip
-
