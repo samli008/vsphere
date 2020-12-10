@@ -6,6 +6,16 @@ physicalESX:
   user: 'root' 
   password: 'liyang@008' 
   vswitch: vSwitch0
+  r610a:
+    host: '192.168.6.121'
+    user: 'root' 
+    password: 'liyang@008' 
+    vswitch: vSwitch0
+  r610b:
+    host: '192.168.6.122'
+    user: 'root' 
+    password: 'liyang@008' 
+    vswitch: vSwitch0
 
 vcenter:
   ip: '192.168.6.108'
@@ -35,40 +45,53 @@ clusters:
     drs: True
     vsan: True
 
-vESX:
+vESX1:
   esxi01:
+    ip: 192.168.6.101
+    mask: 255.255.255.0
+    gw: 192.168.6.1
+    mng_cluster: 'Management' 
+    cluster: Compute
+    vmotion_ip: 192.168.100.101
+    vsan_ip: 192.168.200.101
+  esxi02:
+    ip: 192.168.6.102
+    mask: 255.255.255.0
+    gw: 192.168.6.1
+    mng_cluster: 'Management' 
+    cluster: Compute
+    vmotion_ip: 192.168.100.102
+    vsan_ip: 192.168.200.102
+  esxi03:
+    ip: 192.168.6.103
+    mask: 255.255.255.0
+    gw: 192.168.6.1
+    mng_cluster: 'Management' 
+    cluster: Compute
+    vmotion_ip: 192.168.100.103
+    vsan_ip: 192.168.200.103
+vESX2:
+  esxi04:
     ip: 192.168.6.104
     mask: 255.255.255.0
     gw: 192.168.6.1
     mng_cluster: 'Management' 
     cluster: Compute
-    vlan: 48 
-    cpu: 8 
-    ram: 4096
-    hdd: 180 
     vmotion_ip: 192.168.100.104
     vsan_ip: 192.168.200.104
-  esxi02:
+  esxi05:
     ip: 192.168.6.105
     mask: 255.255.255.0
     gw: 192.168.6.1
     mng_cluster: 'Management' 
     cluster: Compute
-    vlan: 48 
-    cpu: 8 
-    ram: 4096
-    hdd: 180 
     vmotion_ip: 192.168.100.105
     vsan_ip: 192.168.200.105
-  esxi03:
+  esxi06:
     ip: 192.168.6.106
     mask: 255.255.255.0
     gw: 192.168.6.1
     mng_cluster: 'Management' 
     cluster: Compute
-    vlan: 48 
-    cpu: 8 
-    ram: 4096
-    hdd: 180 
     vmotion_ip: 192.168.100.106
     vsan_ip: 192.168.200.106

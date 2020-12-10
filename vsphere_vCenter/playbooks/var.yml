@@ -1,0 +1,24 @@
+iso: 
+  iso1: esxi60.iso
+
+physicalESX:
+  host: '192.168.6.107'
+  user: 'root' 
+  password: 'liyang@008' 
+  vswitch: vSwitch0
+
+vcenter:
+  ip: '192.168.6.108' 
+  mask: '24'
+  gw: '192.168.6.1'
+  network: 'vc'
+  name: 'vcenter.liyang.com'
+  psc_name: 'vcenter.liyang.com'
+  psc_ip: '192.168.6.108'
+  thin: 'true'
+  user: 'administrator@liyang.com' 
+  password: 'Liyang@008' 
+  datacenter: 'data01'
+  datastore: 'dt01'
+  domain: 'liyang.com'
+

@@ -1,0 +1,46 @@
+---
+- name: Deploy VM
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - ../answerfile.yml
+  tasks:
+    - name: demo
+      vmware_guest:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}" 
+        datacenter: "{{ vcenter.datacenter }}"
+        esxi_hostname: 192.168.6.122
+        guest_id: vmkernel6Guest
+        validate_certs: no
+        folder: /
+        name: "{{ item.key }}"
+        state: poweredon
+        disk:
+        - size_gb: 20
+          type: thin
+          datastore: dt012
+        - size_gb: 30
+          type: thin
+          datastore: dt012
+        - size_gb: 50
+          type: thin
+          datastore: dt012
+        networks:
+        - name: vc
+          device_type: vmxnet3 
+          network_type: standard
+        - name: allVlan
+          device_type: vmxnet3
+        hardware:
+          memory_mb: 6144
+          num_cpus: 2
+          scsi: lsilogic
+        cdrom:
+        - controller_number: 0
+          unit_number: 0
+          state: present
+          type: iso
+          iso_path: "[dt012] ISO/esxi67.iso"
+      with_dict: "{{ vESX2 }}"

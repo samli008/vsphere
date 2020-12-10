@@ -1,0 +1,42 @@
+---
+- name: Prepare Physical ESXi
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - ../answerfile.yml
+  tasks:
+    - name: Create Infrastructure portgroup
+      vmware_portgroup:
+        hostname: "{{ physicalESX.host }}"
+        esxi_hostname: "{{ physicalESX.host }}"
+        username: "{{ physicalESX.user }}"
+        password: "{{ physicalESX.password }}"
+        switch_name: "{{ physicalESX.vswitch }}"
+        portgroup_name: "{{ vcenter.network }}"
+        network_policy:
+          promiscuous_mode: True
+        validate_certs: False
+
+    - name: Add a vSwitch
+      vmware_vswitch:
+        hostname: "{{ physicalESX.host }}"
+        username: "{{ physicalESX.user }}"
+        password: "{{ physicalESX.password }}"
+        switch_name: vSwitch1
+        nics:
+        - vmnic1
+        mtu: 1500
+        validate_certs: False
+
+    - name: Add a portgroup
+      vmware_portgroup:
+        hostname: "{{ physicalESX.host }}"
+        username: "{{ physicalESX.user }}"
+        password: "{{ physicalESX.password }}"
+        esxi_hostname: "{{ physicalESX.host }}"
+        switch_name: vSwitch1
+        portgroup_name: allVlan
+        vlan_id: 4095
+        network_policy:
+          promiscuous_mode: True
+        validate_certs: False

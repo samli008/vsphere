@@ -1,0 +1,167 @@
+---
+- name: Configure vESX
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - ../answerfile.yml
+  tasks:
+    - name: Change vESXi hostnames
+      vmware_vm_shell:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        vm_id: "{{ item.key }}"
+        vm_username: root
+        vm_password: liyang@008
+        vm_shell: /bin/esxcli
+        vm_shell_args: "system hostname set --fqdn={{ item.key }}.liyang.com"
+        vm_shell_env:
+        - "PATH=/bin"
+        - "VAR=test"
+        vm_shell_cwd: "/tmp"
+      with_dict: "{{ vESX }}"
+      async: 7200
+      poll: 0
+      register: hname
+    - name: Result check for configuring hostname
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      with_items: "{{ hname.results }}"
+      retries: 10
+    - name: Set VLAN to Management portgroup
+      vmware_vm_shell:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        vm_id: "{{ item.key }}"
+        vm_username: root
+        vm_password: liyang@008
+        vm_shell: /bin/esxcli
+        vm_shell_args: "network vswitch standard portgroup set --portgroup-name='Management Network'"
+        vm_shell_env: 
+        - "PATH=/bin"
+        - "VAR=test"
+        vm_shell_cwd: "/tmp"
+      with_dict: "{{ vESX }}"
+      async: 7200
+      poll: 0
+      register: hvlan
+    - name: Set vmk0 ip addresses
+      vmware_vm_shell:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        vm_id: "{{ item.key }}"
+        vm_username: root
+        vm_password: liyang@008
+        vm_shell: /bin/esxcli
+        vm_shell_args: "network ip interface ipv4 set --interface-name=vmk0 --ipv4={{ item.value.ip }} --netmask={{ item.value.mask }} --type=static"
+        vm_shell_env: 
+        - "PATH=/bin"
+        - "VAR=test"
+        vm_shell_cwd: "/tmp"
+      with_dict: "{{ vESX }}"
+      async: 7200
+      poll: 0
+      register: hip
+    - name: Set default gw
+      vmware_vm_shell:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        vm_id: "{{ item.key }}"
+        vm_username: root
+        vm_password: liyang@008
+        vm_shell: /bin/esxcfg-route
+        vm_shell_args: " -a default {{ item.value.gw }}"
+        vm_shell_env: 
+        - "PATH=/bin"
+        - "VAR=test"
+        vm_shell_cwd: "/tmp"
+      with_dict: "{{ vESX }}"
+      async: 7200
+      poll: 0
+      register: hgw
+    - name: Set search domain
+      vmware_vm_shell:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        vm_id: "{{ item.key }}"
+        vm_username: root
+        vm_password: liyang@008
+        vm_shell: /bin/esxcli
+        vm_shell_args: "network ip dns search add --domain=liyang.com"
+        vm_shell_env: 
+        - "PATH=/bin"
+        - "VAR=test"
+        vm_shell_cwd: "/tmp"
+      with_dict: "{{ vESX }}"
+      async: 7200
+      poll: 0
+      register: hsd
+    - name: Set a DNS Server
+      vmware_vm_shell:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        vm_id: "{{ item.key }}"
+        vm_username: root
+        vm_password: liyang@008
+        vm_shell: /bin/esxcli
+        vm_shell_args: "network ip dns server add --server={{ dns1 }}"
+        vm_shell_env: 
+        - "PATH=/bin"
+        - "VAR=test"
+        vm_shell_cwd: "/tmp"
+      with_dict: "{{ vESX }}"
+      async: 7200
+      poll: 0
+      register: hdns
+    - name: Disable SSH Warnings
+      vmware_vm_shell:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        vm_id: "{{ item.key }}"
+        vm_username: root
+        vm_password: liyang@008
+        vm_shell: /bin/vim-cmd
+        vm_shell_args: "hostsvc/advopt/update UserVars.SuppressShellWarning long 1"
+        vm_shell_env: 
+        - "PATH=/bin"
+        - "VAR=test"
+        vm_shell_cwd: "/tmp"
+      with_dict: "{{ vESX }}"
+      async: 7200
+      poll: 0
+      register: hwrn
+    - name: Add ESXi Host to VCSA
+      vmware_host:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter_name: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        cluster_name: "{{ item.value.cluster }}"
+        esxi_hostname: "{{ item.value.ip }}"
+        esxi_username: "root"
+        esxi_password: "liyang@008"
+        state: present
+      with_dict: "{{ vESX }}"

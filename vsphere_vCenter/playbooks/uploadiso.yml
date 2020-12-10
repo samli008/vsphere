@@ -1,0 +1,18 @@
+---
+- name: Prepare ESXi installer ISO
+  hosts: localhost
+  gather_facts: True
+  vars_files:
+    - ./var.yml
+  tasks:
+    - name: Upload the ISO to the Datastore
+      vsphere_copy: 
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}" 
+        password: "{{ vcenter.password }}"
+        datacenter: "{{ vcenter.datacenter }}"
+        datastore: "{{ vcenter.datastore }}" 
+        src: "{{item.value}}"
+        path: "/ISO/{{item.value}}"
+        validate_certs: False
+      with_dict: "{{iso}}"

@@ -1,0 +1,128 @@
+---
+- name: Create and connect VDS
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - ../answerfile.yml
+  tasks:
+    - name: Create Distributed Switch
+      vmware_dvswitch:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter_name: "{{ vcenter.datacenter }}"
+        validate_certs: false
+        switch_name: "ComputeEdgeVDS"
+        mtu: 1500
+        uplink_quantity: 1
+        discovery_proto: lldp
+        discovery_operation: both
+        state: present
+
+    - name: Create Management Portgroup
+      vmware_dvs_portgroup:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        validate_certs: false
+        portgroup_name: Management
+        switch_name: "ComputeEdgeVDS"
+        vlan_id: 6
+        num_ports: 120
+        portgroup_type: earlyBinding
+        state: present
+
+    - name: Create vMotion Portgroup
+      vmware_dvs_portgroup:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        validate_certs: false
+        portgroup_name: vMotion
+        switch_name: "ComputeEdgeVDS"
+        vlan_id: 100
+        num_ports: 120
+        portgroup_type: earlyBinding
+        state: present
+
+    - name: Create vSAN Portgroup
+      vmware_dvs_portgroup:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        validate_certs: false
+        portgroup_name: vSAN
+        switch_name: "ComputeEdgeVDS"
+        vlan_id: 200
+        num_ports: 120
+        portgroup_type: earlyBinding
+        state: present
+
+    - name: Migrate uplinks to the new VDS
+      vmware_dvs_host:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        validate_certs: false
+        esxi_hostname: "{{ item.value.ip }}"
+        switch_name: "ComputeEdgeVDS"
+        vmnics:
+          - vmnic1
+        state: present
+      with_dict: "{{ vESX }}"
+
+    - name: Create vMotion vmk1
+      vmware_vmkernel:
+        hostname: "{{ vcenter.ip }}"
+        esxi_hostname: "{{ item.value.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password}}"
+        state: present
+        portgroup_name: vMotion
+        dvswitch_name: "ComputeEdgeVDS"
+        validate_certs: False
+        enable_vmotion: true
+        network:
+          type: 'static'
+          ip_address: "{{ item.value.vmotion_ip }}"
+          subnet_mask: 255.255.255.0
+      with_dict: "{{ vESX }}"
+
+    - name: Create vSAN vmk2
+      vmware_vmkernel:
+        hostname: "{{ vcenter.ip }}"
+        esxi_hostname: "{{ item.value.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password}}"
+        state: present
+        enable_vsan: true
+        portgroup_name: vSAN
+        dvswitch_name: "ComputeEdgeVDS"
+        validate_certs: False
+        network:
+          type: 'static'
+          ip_address: "{{ item.value.vsan_ip }}"
+          subnet_mask: 255.255.255.0
+      with_dict: "{{ vESX }}"
+
+    - name: Enable vSAN
+      vmware_cluster_vsan:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter_name: data01
+        cluster_name: "Compute"
+        enable_vsan: true
+        vsan_auto_claim_storage: true
+        validate_certs: False
+
+    - name: Enable HA on the clusters
+      vmware_cluster_ha:
+        hostname: "{{ vcenter.ip }}"
+        username: "{{ vcenter.user }}"
+        password: "{{ vcenter.password }}"
+        datacenter_name: data01
+        cluster_name: "Compute"
+        ha_vm_monitoring: vmMonitoringOnly
+        enable_ha: true
+        validate_certs: False
