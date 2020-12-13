@@ -1,8 +1,7 @@
-# vsphere-vCenter-deploy
+## vsphere-vCenter-deploy
 Ansible playbook to automate deployment of vCenter, nested ESXi hosts
-
-#### Table of Contents
-## Description
+![](./img/vsan.jpg)
+## Table of Contents
 
 This repository will be used to hold an Ansible Playbook to deploy and configure vCenter and nested ESXi VMs 
 
