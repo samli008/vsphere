@@ -20,3 +20,7 @@ esxcli storage nmp device list
 esxcli storage nmp satp rule add -s VMW_SATP_ALUA -V COMPELNT -P VMW_PSP_RR -o disable_action_OnRetryErrors -e "Dell EMC SC Series Claim Rule" -O iops=3
 reboot
 esxcli storage nmp device list | grep -A2 naa.
+
+# modify sas hba parameter
+esxcli system module parameters set -p issue_scsi_cmd_to_bringup_drive=0 -m lsi_msgpt3
+esxcli system module parameters list -m lsi_msgpt3
